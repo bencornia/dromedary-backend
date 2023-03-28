@@ -1,62 +1,54 @@
-const { Router } = require("express");
+const { Router } = require('express');
+const express = require('express');
 
 // Import middleware
-const { body } = require("express-validator");
-const { validateObjectId } = require("../middleware/objectId.middleware");
-const { uploadWrapper } = require("../middleware/uploadImage.middleware");
-const { validateResult } = require("../middleware/validateResult.middleware");
-const { checkAuth } = require("../middleware/checkAuth.middleware");
+const { validateObjectId } = require('../middleware/objectId.middleware');
+const { validateResult } = require('../middleware/validateResult.middleware');
+const { checkAuth } = require('../middleware/checkAuth.middleware');
 
 // Import controllers
-const prodController = require("../controllers/products.controller");
+const prodController = require('../controllers/products.controller');
+const { productValidator } = require('../validation/product.validation');
 
 const productsRouter = Router();
-const productImageFieldName = "productImage";
+const productImageFieldName = 'productImage';
+
+// Mount json parser for all routes
+productsRouter.use(express.json());
 
 // GET
-productsRouter.get("", checkAuth, prodController.getAllProducts);
+productsRouter.get('', prodController.getAllProducts);
 productsRouter.get(
-    "/business/:id",
-    validateObjectId,
-    prodController.getProductsByBusiness
+	'/business/:id',
+	validateObjectId,
+	prodController.getProductsByBusiness
 );
 
 // GET by id
 productsRouter.get(
-    "/:id",
-    checkAuth,
-    validateObjectId,
-    prodController.getProduct
+	'/:id',
+	checkAuth,
+	validateObjectId,
+	prodController.getProduct
 );
 
 // POST
-productsRouter.post(
-    "/:id",
-    checkAuth,
-    uploadWrapper(productImageFieldName),
-    validateObjectId,
-    body("productName").not().isEmpty().escape(),
-    validateResult,
-    prodController.postProduct
-);
+productsRouter.post('', checkAuth, validateResult, prodController.postProduct);
 
 // PUT
 productsRouter.put(
-    "/:id",
-    checkAuth,
-    uploadWrapper(productImageFieldName),
-    validateObjectId,
-    body("productName").not().isEmpty().escape(),
-    validateResult,
-    prodController.putProduct
+	'/:id',
+	checkAuth,
+	validateObjectId,
+	prodController.putProduct
 );
 
 // DELETE
 productsRouter.delete(
-    "/:id",
-    checkAuth,
-    validateObjectId,
-    prodController.deleteProduct
+	'/:id',
+	checkAuth,
+	validateObjectId,
+	prodController.deleteProduct
 );
 
 module.exports = { productsRouter };
