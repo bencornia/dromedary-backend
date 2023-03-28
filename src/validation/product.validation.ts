@@ -1,9 +1,7 @@
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 
-const productValidator = [
+export const productValidator = [
 	body('productName').not().isEmpty().trim(),
 	body('productQuantity').not().isEmpty().trim(),
 	body('productPrice').not().isEmpty().trim(),
 ];
-
-module.exports = { productValidator };

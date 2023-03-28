@@ -1,19 +1,18 @@
-const { Router } = require('express');
-const express = require('express');
-const { body } = require('express-validator');
+import { Router } from 'express';
+import express from 'express';
+import { body } from 'express-validator';
 
 // Import middlewares
-const { createUserValidator } = require('../validation/users.validation');
-const { validateObjectId } = require('../middleware/objectId.middleware');
-const encrypt = require('../middleware/encryptData.middleware');
-const upload = require('../middleware/uploadImage.middleware');
-const { validateResult } = require('../middleware/validateResult.middleware');
-const { checkAuth } = require('../middleware/checkAuth.middleware');
+import { createUserValidator } from '../validation/users.validation';
+import { validateObjectId } from '../middleware/objectId.middleware';
+import { encryptPassword } from '../middleware/encryptData.middleware';
+import { uploadWrapper } from '../middleware/uploadImage.middleware';
+import { validateResult } from '../middleware/validateResult.middleware';
 
 // Import controllers
-const userController = require('../controllers/users.controller');
+import * as userController from '../controllers/users.controller';
 
-const usersRouter = Router();
+export const usersRouter = Router();
 const imageFieldName = 'profileImage';
 
 // GET
@@ -23,10 +22,10 @@ usersRouter.get('/:id', validateObjectId, userController.getUser);
 // POST
 usersRouter.post(
 	'',
-	upload.uploadWrapper(imageFieldName),
+	uploadWrapper(imageFieldName),
 	createUserValidator,
 	validateResult,
-	encrypt.encryptPassword,
+	encryptPassword,
 	userController.postUser
 );
 
@@ -34,7 +33,7 @@ usersRouter.post(
 usersRouter.put(
 	'/:id',
 	validateObjectId,
-	upload.uploadWrapper(imageFieldName),
+	uploadWrapper(imageFieldName),
 	userController.putUser
 );
 usersRouter.put(
@@ -66,5 +65,3 @@ usersRouter.delete('/:id', validateObjectId, userController.deleteUser);
 
 // login
 usersRouter.post('/login', express.json(), userController.login);
-
-module.exports = { usersRouter };

@@ -1,18 +1,16 @@
-const { Router } = require('express');
-const express = require('express');
+import { Router } from 'express';
+import express from 'express';
 
 // Import middleware
-const { validateObjectId } = require('../middleware/objectId.middleware');
-const { validateResult } = require('../middleware/validateResult.middleware');
-const { checkAuth } = require('../middleware/checkAuth.middleware');
+import { validateObjectId } from '../middleware/objectId.middleware';
+import { validateResult } from '../middleware/validateResult.middleware';
+import { checkAuth } from '../middleware/checkAuth.middleware';
 
 // Import controllers
-const prodController = require('../controllers/products.controller');
-const { productValidator } = require('../validation/product.validation');
-const { body } = require('express-validator');
+import * as prodController from '../controllers/products.controller';
+import { body } from 'express-validator';
 
-const productsRouter = Router();
-const productImageFieldName = 'productImage';
+export const productsRouter = Router();
 
 // Mount json parser for all routes
 productsRouter.use(express.json());
@@ -64,5 +62,3 @@ productsRouter.delete(
 	validateObjectId,
 	prodController.deleteProductsByBusiness
 );
-
-module.exports = { productsRouter };

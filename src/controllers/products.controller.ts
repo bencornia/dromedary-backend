@@ -1,8 +1,10 @@
-const { Product } = require('../models/products.model');
-const { validationResult } = require('express-validator');
-const { handleServerError } = require('../middleware/serverError');
+import { Request, Response, NextFunction } from 'express';
+import { validationResult } from 'express-validator';
 
-async function getAllProducts(req, res) {
+import { Product } from '../models/products.model';
+import { handleServerError } from '../middleware/serverError';
+
+export async function getAllProducts(req: Request, res: Response) {
 	try {
 		const products = await Product.find({});
 
@@ -12,7 +14,7 @@ async function getAllProducts(req, res) {
 	}
 }
 
-async function getProductsByBusiness(req, res) {
+export async function getProductsByBusiness(req: Request, res: Response) {
 	let id = req.params.id;
 
 	try {
@@ -24,7 +26,7 @@ async function getProductsByBusiness(req, res) {
 	}
 }
 
-async function getProduct(req, res) {
+export async function getProduct(req: Request, res: Response) {
 	// Get id
 	let id = req.params.id;
 
@@ -44,7 +46,7 @@ async function getProduct(req, res) {
 	}
 }
 
-async function postProduct(req, res) {
+export async function postProduct(req: Request, res: Response) {
 	try {
 		// Create product
 		const doc = {
@@ -62,7 +64,7 @@ async function postProduct(req, res) {
 	}
 }
 
-async function putProduct(req, res) {
+export async function putProduct(req: Request, res: Response) {
 	let id = req.params.id;
 
 	try {
@@ -88,7 +90,7 @@ async function putProduct(req, res) {
 	}
 }
 
-async function deleteProduct(req, res) {
+export async function deleteProduct(req: Request, res: Response) {
 	let id = req.params.id;
 
 	try {
@@ -107,7 +109,7 @@ async function deleteProduct(req, res) {
 	}
 }
 
-async function deleteProductsByBusiness(req, res) {
+export async function deleteProductsByBusiness(req: Request, res: Response) {
 	let id = req.params.id;
 
 	try {
@@ -122,13 +124,3 @@ async function deleteProductsByBusiness(req, res) {
 		return handleServerError(res, error);
 	}
 }
-
-module.exports = {
-	getAllProducts,
-	getProductsByBusiness,
-	getProduct,
-	postProduct,
-	putProduct,
-	deleteProduct,
-	deleteProductsByBusiness,
-};

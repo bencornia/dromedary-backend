@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 
-const { indexRouter } = require('./routes/index.router');
-const { notFound } = require('./controllers/not-found.controller');
-const { connectDB } = require('./models/connection');
+import { indexRouter } from './routes/index.router';
+import { notFound } from './controllers/not-found.controller';
+import { connectDB } from './models/connection';
 
 // Create app
 const app = express();

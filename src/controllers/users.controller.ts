@@ -1,12 +1,13 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { Request, Response } from 'express';
 
-const { config } = require('../config/config');
-const { User } = require('../models/users.model');
-const { handleServerError } = require('../middleware/serverError');
-const { deleteImage } = require('../helpers/deleteImage.helper');
+import { config } from '../config/config';
+import { User } from '../models/users.model';
+import { handleServerError } from '../middleware/serverError';
+import { deleteImageFromServer } from '../helpers/deleteImage.helper';
 
-async function getUsers(req, res) {
+export async function getUsers(req: Request, res: Response) {
 	try {
 		const users = await User.find({});
 
@@ -20,7 +21,7 @@ async function getUsers(req, res) {
 	}
 }
 
-async function getUser(req, res) {
+export async function getUser(req: Request, res: Response) {
 	// Get id
 	let id = req.params.id;
 
@@ -43,7 +44,7 @@ async function getUser(req, res) {
 	}
 }
 
-async function postUser(req, res) {
+export async function postUser(req: Request, res: Response) {
 	try {
 		// Assign default image
 		if (!req.body.profileImagePath) {
@@ -70,7 +71,7 @@ async function postUser(req, res) {
 		const existing = await User.exists({ email: req.body.email });
 
 		if (existing) {
-			deleteImage(req.body.profileImagePath);
+			deleteImageFromServer(req.body.profileImagePath);
 			return res.status(400).json({ error: 'Email already exists!' });
 		}
 
@@ -80,14 +81,14 @@ async function postUser(req, res) {
 		return res.status(201).json({ id: user._id });
 	} catch (error) {
 		// Delete image
-		deleteImage(req.body.profileImagePath);
+		deleteImageFromServer(req.body.profileImagePath);
 
 		// Document Creation failed
 		return handleServerError(res, error);
 	}
 }
 
-async function putUser(req, res) {
+export async function putUser(req: Request, res: Response) {
 	// Try making request
 	try {
 		// Check for valid object id
@@ -105,7 +106,7 @@ async function putUser(req, res) {
 
 		// Delete image
 		if (req.body.profileImagePath) {
-			deleteImage(user.profileImagePath);
+			deleteImageFromServer(user.profileImagePath);
 		}
 
 		// Assign default image
@@ -135,7 +136,7 @@ async function putUser(req, res) {
 	}
 }
 
-async function deleteUser(req, res) {
+export async function deleteUser(req: Request, res: Response) {
 	let id = req.params.id;
 	try {
 		// Find user
@@ -154,7 +155,7 @@ async function deleteUser(req, res) {
 			throw new Error('Deletion Failed!');
 		}
 		// delete profile image
-		deleteImage(user.profileImagePath);
+		deleteImageFromServer(user.profileImagePath);
 
 		// Successful deletion
 		return res.sendStatus(204);
@@ -164,7 +165,7 @@ async function deleteUser(req, res) {
 }
 
 // Handle login
-async function login(req, res, next) {
+export async function login(req: Request, res: Response, next) {
 	try {
 		const password = req.body.password;
 		const email = req.body.email;
@@ -194,7 +195,6 @@ async function login(req, res, next) {
 			profileImagePath: user.profileImagePath,
 			ownerName: user.ownerName,
 			email: user.email,
-			apiKey: user.apiKey,
 			token: token,
 			expiration: Date.now() + 3600000,
 		};
@@ -206,7 +206,7 @@ async function login(req, res, next) {
 	}
 }
 
-async function updatePassword(req, res) {
+export async function updatePassword(req: Request, res: Response) {
 	try {
 		// Check for existing user
 		const user = await User.findOne({ _id: req.params.id });
@@ -234,13 +234,3 @@ async function updatePassword(req, res) {
 		handleServerError(res, error);
 	}
 }
-
-module.exports = {
-	getUsers,
-	getUser,
-	postUser,
-	putUser,
-	deleteUser,
-	login,
-	updatePassword,
-};
