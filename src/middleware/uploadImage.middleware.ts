@@ -38,7 +38,7 @@ function destination(
 	file: Express.Multer.File,
 	cb: (error: Error, filename: string) => void
 ) {
-	cb(null, 'uploads/');
+	cb(null, './dist/uploads');
 }
 
 /**

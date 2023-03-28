@@ -4,9 +4,10 @@
 		"esModuleInterop": true,
 		"target": "ESNext",
 		"moduleResolution": "node",
-		"outDir": "dist",
-		"rootDir": "src",
-		"typeRoots": ["src/types"]
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"typeRoots": ["src/types"],
+		"sourceMap": true
 	},
 	"exclude": ["node_modules"]
 }

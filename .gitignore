@@ -2,3 +2,4 @@
 .env
 /*.rest
 dist
+.vscode
