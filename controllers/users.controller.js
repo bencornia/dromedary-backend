@@ -208,7 +208,6 @@ async function login(req, res, next) {
 
 async function updatePassword(req, res) {
 	try {
-		console.log(req.params);
 		// Check for existing user
 		const user = await User.findOne({ _id: req.params.id });
 		if (!user) {
