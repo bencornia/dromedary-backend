@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const express = require('express');
+const { body } = require('express-validator');
 
 // Import middlewares
 const { createUserValidator } = require('../validation/users.validation');
@@ -7,6 +8,7 @@ const { validateObjectId } = require('../middleware/objectId.middleware');
 const encrypt = require('../middleware/encryptData.middleware');
 const upload = require('../middleware/uploadImage.middleware');
 const { validateResult } = require('../middleware/validateResult.middleware');
+const { checkAuth } = require('../middleware/checkAuth.middleware');
 
 // Import controllers
 const userController = require('../controllers/users.controller');
@@ -34,6 +36,29 @@ usersRouter.put(
 	validateObjectId,
 	upload.uploadWrapper(imageFieldName),
 	userController.putUser
+);
+usersRouter.put(
+	'/password/:id',
+	// checkAuth,
+	express.json(),
+	body('currentPassword')
+		.not()
+		.isEmpty()
+		.trim()
+		.isLength({ min: 8 })
+		.matches(
+			/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/gm
+		),
+	body('newPassword')
+		.not()
+		.isEmpty()
+		.trim()
+		.isLength({ min: 8 })
+		.matches(
+			/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/gm
+		),
+	validateObjectId,
+	userController.updatePassword
 );
 
 // DELETE

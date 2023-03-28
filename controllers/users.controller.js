@@ -206,6 +206,36 @@ async function login(req, res, next) {
 	}
 }
 
+async function updatePassword(req, res) {
+	try {
+		console.log(req.params);
+		// Check for existing user
+		const user = await User.findOne({ _id: req.params.id });
+		if (!user) {
+			return res.status(401).json({ message: 'User does not exist!' });
+		}
+
+		// Compare password
+		const isValidPassword = await bcrypt.compare(
+			req.body.currentPassword,
+			user.password
+		);
+		if (!isValidPassword) {
+			return res.status(401).json({ message: 'Authentication failed!' });
+		}
+
+		// Create new password
+		user.password = await bcrypt.hash(req.body.newPassword, 10);
+
+		// Save user
+		user.save();
+
+		return res.sendStatus(204);
+	} catch (error) {
+		handleServerError(res, error);
+	}
+}
+
 module.exports = {
 	getUsers,
 	getUser,
@@ -213,4 +243,5 @@ module.exports = {
 	putUser,
 	deleteUser,
 	login,
+	updatePassword,
 };
