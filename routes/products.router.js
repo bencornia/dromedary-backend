@@ -9,6 +9,7 @@ const { checkAuth } = require('../middleware/checkAuth.middleware');
 // Import controllers
 const prodController = require('../controllers/products.controller');
 const { productValidator } = require('../validation/product.validation');
+const { body } = require('express-validator');
 
 const productsRouter = Router();
 const productImageFieldName = 'productImage';
@@ -33,7 +34,13 @@ productsRouter.get(
 );
 
 // POST
-productsRouter.post('', checkAuth, validateResult, prodController.postProduct);
+productsRouter.post(
+	'',
+	checkAuth,
+	body('businessId').not().isEmpty(),
+	validateResult,
+	prodController.postProduct
+);
 
 // PUT
 productsRouter.put(

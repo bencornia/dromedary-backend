@@ -56,7 +56,7 @@ async function postProduct(req, res) {
 
 		const product = await Product.create(doc);
 
-		return res.status(201).json({ id: product._id });
+		return res.status(201).json(product);
 	} catch (error) {
 		return handleServerError(res, error);
 	}
@@ -82,7 +82,7 @@ async function putProduct(req, res) {
 		product = await product.save();
 
 		// Return updated result
-		return res.status(201).json({ id: product._id });
+		return res.status(201).json(product);
 	} catch (error) {
 		return handleServerError(res, error);
 	}
