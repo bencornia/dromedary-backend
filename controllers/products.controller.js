@@ -107,6 +107,22 @@ async function deleteProduct(req, res) {
 	}
 }
 
+async function deleteProductsByBusiness(req, res) {
+	let id = req.params.id;
+
+	try {
+		const result = await Product.deleteMany({ businessId: id });
+
+		if (!result.acknowledged) {
+			return res.status(400).json({ message: 'Bad Request' });
+		}
+		console.log('deleted business inventory');
+		return res.sendStatus(204);
+	} catch (error) {
+		return handleServerError(res, error);
+	}
+}
+
 module.exports = {
 	getAllProducts,
 	getProductsByBusiness,
@@ -114,4 +130,5 @@ module.exports = {
 	postProduct,
 	putProduct,
 	deleteProduct,
+	deleteProductsByBusiness,
 };

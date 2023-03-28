@@ -58,4 +58,11 @@ productsRouter.delete(
 	prodController.deleteProduct
 );
 
+productsRouter.delete(
+	'/business/:id',
+	checkAuth,
+	validateObjectId,
+	prodController.deleteProductsByBusiness
+);
+
 module.exports = { productsRouter };
