@@ -26,7 +26,7 @@ const cwd = process.cwd();
 
 let subfolders = fs.readdirSync(cwd);
 
-console.log('\nFilenames in directory:');
+console.log(`\nFilenames in directory: ${cwd}`);
 subfolders.forEach((file) => {
 	console.log('File:', file);
 });
