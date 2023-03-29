@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 export const createUserValidator = [
 	body('businessName').not().isEmpty().trim().escape(),
 	body('ownerName').not().isEmpty().trim().escape(),
-	body('email').isEmail(),
+	body('email').not().isEmpty().isEmail(),
 	body('password')
 		.not()
 		.isEmpty()

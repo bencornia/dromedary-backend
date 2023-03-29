@@ -118,7 +118,6 @@ export async function deleteProductsByBusiness(req: Request, res: Response) {
 		if (!result.acknowledged) {
 			return res.status(400).json({ message: 'Bad Request' });
 		}
-		console.log('deleted business inventory');
 		return res.sendStatus(204);
 	} catch (error) {
 		return handleServerError(res, error);

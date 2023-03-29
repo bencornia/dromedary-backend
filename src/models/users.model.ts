@@ -6,7 +6,7 @@ const userSchema = new Schema({
 	ownerName: String,
 	email: String,
 	password: String,
-	profileImagePath: String,
+	// profileImagePath: String,
 	createdDate: String,
 	lastUpdatedDate: String,
 });

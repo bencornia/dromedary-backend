@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 import { config } from '../config/config';
 import { User } from '../models/users.model';
 import { handleServerError } from '../middleware/serverError';
-import { deleteImageFromServer } from '../helpers/deleteImage.helper';
+// import { deleteImageFromServer } from '../helpers/deleteImage.helper';
 
 export async function getUsers(req: Request, res: Response) {
 	try {
@@ -47,22 +47,22 @@ export async function getUser(req: Request, res: Response) {
 export async function postUser(req: Request, res: Response) {
 	try {
 		// Assign default image
-		if (!req.body.profileImagePath) {
-			req.body.profileImagePath = `${req.protocol}://${req.get(
-				'host'
-			)}/images/default-profile.png`;
-		} else {
-			req.body.profileImagePath = `${req.protocol}://${req.get(
-				'host'
-			)}/images/${req.body.profileImagePath}`;
-		}
+		// if (!req.body.profileImagePath) {
+		// 	req.body.profileImagePath = `${req.protocol}://${req.get(
+		// 		'host'
+		// 	)}/images/default-profile.png`;
+		// } else {
+		// 	req.body.profileImagePath = `${req.protocol}://${req.get(
+		// 		'host'
+		// 	)}/images/${req.body.profileImagePath}`;
+		// }
 
 		const document = {
 			businessName: req.body.businessName,
 			ownerName: req.body.ownerName,
 			email: req.body.email,
 			password: req.body.password,
-			profileImagePath: req.body.profileImagePath,
+			// profileImagePath: req.body.profileImagePath,
 			createdDate: new Date().toISOString(),
 			lastUpdatedDate: new Date().toISOString(),
 		};
@@ -71,7 +71,7 @@ export async function postUser(req: Request, res: Response) {
 		const existing = await User.exists({ email: req.body.email });
 
 		if (existing) {
-			deleteImageFromServer(req.body.profileImagePath);
+			// deleteImageFromServer(req.body.profileImagePath);
 			return res.status(400).json({ error: 'Email already exists!' });
 		}
 
@@ -81,7 +81,7 @@ export async function postUser(req: Request, res: Response) {
 		return res.status(201).json({ id: user._id });
 	} catch (error) {
 		// Delete image
-		deleteImageFromServer(req.body.profileImagePath);
+		// deleteImageFromServer(req.body.profileImagePath);
 
 		// Document Creation failed
 		return handleServerError(res, error);
@@ -105,20 +105,20 @@ export async function putUser(req: Request, res: Response) {
 		}
 
 		// Delete image
-		if (req.body.profileImagePath) {
-			deleteImageFromServer(user.profileImagePath);
-		}
+		// if (req.body.profileImagePath) {
+		// 	// deleteImageFromServer(user.profileImagePath);
+		// }
 
 		// Assign default image
-		if (!req.body.profileImagePath) {
-			req.body.profileImagePath = `${req.protocol}://${req.get(
-				'host'
-			)}/images/default-profile.png`;
-		} else {
-			req.body.profileImagePath = `${req.protocol}://${req.get(
-				'host'
-			)}/images/${req.body.profileImagePath}`;
-		}
+		// if (!req.body.profileImagePath) {
+		// 	req.body.profileImagePath = `${req.protocol}://${req.get(
+		// 		'host'
+		// 	)}/images/default-profile.png`;
+		// } else {
+		// 	req.body.profileImagePath = `${req.protocol}://${req.get(
+		// 		'host'
+		// 	)}/images/${req.body.profileImagePath}`;
+		// }
 
 		// Make update
 		for (const prop in req.body) {
@@ -155,7 +155,7 @@ export async function deleteUser(req: Request, res: Response) {
 			throw new Error('Deletion Failed!');
 		}
 		// delete profile image
-		deleteImageFromServer(user.profileImagePath);
+		// deleteImageFromServer(user.profileImagePath);
 
 		// Successful deletion
 		return res.sendStatus(204);
@@ -192,7 +192,7 @@ export async function login(req: Request, res: Response, next) {
 		const loginResponse = {
 			userId: user._id,
 			businessName: user.businessName,
-			profileImagePath: user.profileImagePath,
+			// profileImagePath: user.profileImagePath,
 			ownerName: user.ownerName,
 			email: user.email,
 			token: token,
