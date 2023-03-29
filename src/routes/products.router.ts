@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import express from 'express';
+// import express from 'express';
 
 // Import middleware
 import { validateObjectId } from '../middleware/objectId.middleware';
@@ -12,8 +12,8 @@ import { body } from 'express-validator';
 
 export const productsRouter = Router();
 
-// Mount json parser for all routes
-productsRouter.use(express.json());
+// // Mount json parser for all routes
+// productsRouter.use(express.json());
 
 // GET
 productsRouter.get('', prodController.getAllProducts);

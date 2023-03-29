@@ -6,7 +6,7 @@
 	"scripts": {
 		"start:dev": "nodemon app.js",
 		"start": "node dist/app.js",
-		"build": "npm install -f && npm run clean && tsc && npm run copy",
+		"build": "npm install && tsc",
 		"clean": "shx rm -rf dist",
 		"copy": "shx cp -r src/uploads dist"
 	},
