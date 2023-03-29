@@ -16,7 +16,7 @@ export const usersRouter = Router();
 // const imageFieldName = 'profileImage';
 
 // GET
-usersRouter.get('', userController.getUsers);
+// usersRouter.get('', userController.getUsers);
 usersRouter.get('/:id', validateObjectId, userController.getUser);
 
 // POST

@@ -16,9 +16,10 @@ export const productsRouter = Router();
 // productsRouter.use(express.json());
 
 // GET
-productsRouter.get('', prodController.getAllProducts);
+// productsRouter.get('', prodController.getAllProducts);
 productsRouter.get(
 	'/business/:id',
+	checkAuth,
 	validateObjectId,
 	prodController.getProductsByBusiness
 );
