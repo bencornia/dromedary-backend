@@ -20,17 +20,6 @@ app.use('/images', express.static('./uploads'));
 app.use('/api', indexRouter);
 app.use('*', notFound);
 
-// Print information about directory
-import * as fs from 'fs';
-const cwd = process.cwd();
-
-let subfolders = fs.readdirSync(cwd);
-
-console.log(`\nFilenames in directory: ${cwd}`);
-subfolders.forEach((file) => {
-	console.log('File:', file);
-});
-
 // Connect database
 connectDB().catch((err) => console.log('[ database ]:' + err));
 
